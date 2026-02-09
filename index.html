@@ -8,10 +8,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Poppins', sans-serif; background-color: #f1f5f9; }
+        body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; }
         .main-border { border: 4px solid #000; }
         .cell-border { border: 2px solid #000; }
         
+        /* Pastel Outlines for Sections (No Glow) */
+        .outline-sec-a { 
+            box-shadow: 4px 4px 0px 0px rgba(0,0,0,1) !important;
+            border: 4px solid #fecdd3 !important; /* Pastel Rose */
+        }
+        .outline-sec-b { 
+            box-shadow: 4px 4px 0px 0px rgba(0,0,0,1) !important;
+            border: 4px solid #e9d5ff !important; /* Pastel Purple/Lavender */
+        }
+
         @media (max-width: 767px) {
             .disconnected-grid { display: block; }
             .mobile-day-section { margin-bottom: 2rem; }
@@ -24,7 +34,7 @@
             .time-column-mobile {
                 flex: 0 0 65px; display: flex; align-items: center; justify-content: center;
                 font-size: 0.6rem; font-weight: 800; text-align: center;
-                background: #e2e8f0; border-radius: 0.5rem;
+                background: #f1f5f9; border-radius: 0.5rem;
             }
             .card-column-mobile { flex: 1; }
         }
@@ -42,8 +52,6 @@
         .split-divider { height: 1px; background-color: #000; width: 100%; }
         
         .info-card { border: 2px solid #000; background: #fff; padding: 1rem; border-radius: 1rem; box-shadow: 4px 4px 0px 0px rgba(0,0,0,1); }
-        
-        /* Cell content structure */
         .routine-cell { display: flex; flex-direction: column; justify-content: space-between; height: 100%; padding: 8px 4px; }
     </style>
 </head>
@@ -59,13 +67,12 @@
         <div class="mb-8 text-center">
             <h1 class="text-3xl md:text-4xl font-black uppercase tracking-tighter">Economics Class Routine</h1>
             <p class="text-xs font-bold text-slate-500 uppercase tracking-widest mt-2">17th Batch B.S.S. Honours 6th Semester • Session 2022-2023</p>
-            <div id="filter-status" class="bg-yellow-300 px-6 py-1.5 rounded-full mt-4 inline-block text-[10px] font-black uppercase border-2 border-black">
+            <div id="filter-status" class="bg-indigo-100 px-6 py-1.5 rounded-full mt-4 inline-block text-[10px] font-black uppercase border-2 border-black">
                 Personalized View
             </div>
         </div>
 
-        <!-- Filter UI -->
-        <div class="flex flex-col md:flex-row gap-6 mb-10 no-print bg-slate-50 p-6 rounded-3xl border-2 border-black/5">
+        <div class="flex flex-col md:flex-row gap-6 mb-8 no-print bg-slate-50 p-6 rounded-3xl border-2 border-black/5">
             <div class="flex-1">
                 <label class="block text-[10px] font-black uppercase mb-3 ml-1 opacity-50">1. Choose Your Section</label>
                 <div class="flex gap-2">
@@ -87,112 +94,68 @@
             </div>
         </div>
 
-        <div id="legend" class="mb-8 flex flex-wrap justify-center gap-x-6 gap-y-3 px-4"></div>
+        <!-- Simplified Section Legend -->
+        <div id="section-legend" class="mb-6 flex justify-center gap-8 transition-opacity duration-300">
+            <div class="flex items-center gap-2">
+                <div class="w-5 h-5 rounded border-2 border-[#fecdd3] bg-[#fff1f2]"></div>
+                <span class="text-[11px] font-black uppercase tracking-wider text-slate-800">Section A</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="w-5 h-5 rounded border-2 border-[#e9d5ff] bg-[#faf5ff]"></div>
+                <span class="text-[11px] font-black uppercase tracking-wider text-slate-800">Section B</span>
+            </div>
+        </div>
 
-        <!-- Routine Grid -->
+        <div id="legend" class="mb-8 flex flex-wrap justify-center gap-x-6 gap-y-3 px-4"></div>
         <div class="disconnected-grid" id="grid-container"></div>
 
-        <!-- Courses & Faculties Section -->
         <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- Compulsory Courses -->
             <div>
-                <h3 class="text-sm font-black uppercase mb-4 px-2 border-l-4 border-blue-500">Compulsory Courses</h3>
-                <div class="space-y-4" id="compulsory-list">
-                    <!-- JS Injection -->
-                </div>
+                <h3 class="text-sm font-black uppercase mb-4 px-2 border-l-4 border-rose-400">Compulsory Courses</h3>
+                <div class="space-y-4" id="compulsory-list"></div>
             </div>
-            
-            <!-- Optional Courses -->
             <div>
-                <h3 class="text-sm font-black uppercase mb-4 px-2 border-l-4 border-green-500">Optional Courses</h3>
-                <div class="space-y-4" id="optional-list">
-                    <!-- JS Injection -->
-                </div>
+                <h3 class="text-sm font-black uppercase mb-4 px-2 border-l-4 border-purple-400">Optional Courses</h3>
+                <div class="space-y-4" id="optional-list"></div>
             </div>
         </div>
 
         <div class="mt-12 pt-8 border-t-2 border-slate-100 flex flex-col md:flex-row justify-between items-center opacity-40 text-[10px] font-bold uppercase gap-4 text-center md:text-left">
             <div>Department of Economics, University of Dhaka</div>
-            <div>Updated on 08-02-2026 • Effective from 15/02/2026</div>
+            <div>Updated on 09-02-2026 • Effective from 15/02/2026</div>
         </div>
     </div>
 
     <script>
         const courses = {
-            "302": { 
-                name: "Econometrics II", 
-                faculty: "S. M Abdullah", 
-                shortFaculty: "SMA",
-                color: "#e0f2fe", 
-                type: "comp" 
-            },
-            "308": { 
-                name: "Public Economics", 
-                faculty: "Tahia Anan Dhira", 
-                shortFaculty: "TAD",
-                color: "#ffedd5", 
-                type: "comp" 
-            },
-            "304": { 
-                name: "Dynamic Optimization", 
-                faculty: "Dr. Md. Deen Islam", 
-                shortFaculty: "MDI",
-                color: "#f1f5f9", 
-                type: "comp" 
-            },
-            "307": { 
-                name: "Fundamentals of Population Science", 
-                faculty: "Dr. Aroni Barkat", 
-                shortFaculty: "AB",
-                color: "#ecfccb", 
-                type: "opt" 
-            },
-            "311": { 
-                name: "Health Economics", 
-                faculty: "Prof. Dr. Rumana Huque", 
-                shortFaculty: "RH",
-                color: "#fae8ff", 
-                type: "opt" 
-            },
-            "312": { 
-                name: "Introduction to Data Science for Economics", 
-                faculty: "Dr. Mohaimen Mansur", 
-                shortFaculty: "MM",
-                color: "#dcfce7", 
-                type: "opt" 
-            },
-            "313": { 
-                name: "Agricultural Economics", 
-                faculty: "Prof. Farzana Laizu", 
-                shortFaculty: "FL",
-                color: "#fef2f2", 
-                type: "opt" 
-            }
+            "302": { name: "Econometrics II", faculty: "S. M Abdullah", shortFaculty: "SMA", color: "#eff6ff", type: "comp" },
+            "308": { name: "Public Economics", faculty: "Tahia Anan Dhira", shortFaculty: "TAD", color: "#fff7ed", type: "comp" },
+            "304": { name: "Dynamic Optimization", faculty: "Dr. Md. Deen Islam", shortFaculty: "MDI", color: "#f8fafc", type: "comp" },
+            "307": { name: "Fundamentals of Population Science", faculty: "Dr. Aroni Barkat", shortFaculty: "AB", color: "#f7fee7", type: "opt" },
+            "311": { name: "Health Economics", faculty: "Prof. Dr. Rumana Huque", shortFaculty: "RH", color: "#fdf4ff", type: "opt" },
+            "312": { name: "Introduction to Data Science for Economics", faculty: "Dr. Mohaimen Mansur", shortFaculty: "MM", color: "#f0fdf4", type: "opt" },
+            "313": { name: "Agricultural Economics", faculty: "Prof. Farzana Laizu", shortFaculty: "FL", color: "#fff1f2", type: "opt" }
         };
 
         const scheduleData = [
-            // 302
             { day: "Sunday", time: "08:00-09:20", id: "302", room: "301", sec: "A" },
             { day: "Sunday", time: "09:30-10:50", id: "302", room: "301", sec: "B" },
             { day: "Tuesday", time: "08:00-09:20", id: "302", room: "302", sec: "B" },
             { day: "Tuesday", time: "09:30-10:50", id: "302", room: "302", sec: "A" },
-            // 308
             { day: "Monday", time: "02:00-03:20", id: "308", room: "301", sec: "A" },
             { day: "Monday", time: "03:30-04:50", id: "308", room: "303", sec: "B" },
             { day: "Wednesday", time: "12:30-01:50", id: "308", room: "302", sec: "A" },
             { day: "Wednesday", time: "02:00-03:20", id: "308", room: "302", sec: "B" },
-            // 304
             { day: "Monday", time: "09:30-10:50", id: "304", room: "301", sec: "B" },
             { day: "Monday", time: "11:00-12:20", id: "304", room: "303", sec: "A" },
             { day: "Wednesday", time: "09:30-10:50", id: "304", room: "301", sec: "A" },
             { day: "Wednesday", time: "11:00-12:20", id: "304", room: "301", sec: "B" },
-            // Optionals
             { day: "Sunday", time: "03:30-04:50", id: "307", room: "303", sec: "ALL" },
             { day: "Thursday", time: "08:00-09:20", id: "307", room: "301", sec: "ALL" },
             { day: "Wednesday", time: "08:00-09:20", id: "311", room: "302", sec: "ALL" },
-            { day: "Thursday", time: "09:00-10:20", id: "311", room: "301", sec: "ALL" },
-            { day: "Tuesday", time: "11:00-12:20", id: "312", room: "302", sec: "ALL" },
-            { day: "Thursday", time: "11:00-12:20", id: "312", room: "302", sec: "ALL" },
+            { day: "Thursday", time: "09:30-10:50", id: "311", room: "301", sec: "ALL" },
+            { day: "Tuesday", time: "03:30-04:50", id: "312", room: "Com. Lab", sec: "ALL" },
+            { day: "Wednesday", time: "03:30-04:50", id: "312", room: "Com. Lab", sec: "ALL" },
             { day: "Sunday", time: "11:00-12:20", id: "313", room: "303", sec: "ALL" },
             { day: "Monday", time: "12:30-01:50", id: "313", room: "302", sec: "ALL" }
         ];
@@ -211,6 +174,10 @@
                 const btn = document.getElementById(`btn-sec-${s}`);
                 btn.className = `flex-1 py-3 rounded-xl border-2 border-black font-bold text-xs transition-all ${filters.sec === s ? 'bg-black text-white' : 'bg-white'}`;
             });
+            
+            const secLegend = document.getElementById('section-legend');
+            secLegend.style.opacity = filters.sec === 'COMBINED' ? '1' : '0.1';
+
             const status = document.getElementById('filter-status');
             const optLabel = filters.opt === 'NONE' ? 'No Optional' : (filters.opt === 'ALL' ? 'All Optionals' : `Opt ${filters.opt}`);
             status.innerText = `${filters.sec === 'COMBINED' ? 'Combined View' : 'Section ' + filters.sec} • ${optLabel}`;
@@ -235,32 +202,18 @@
             compList.innerHTML = '';
             optList.innerHTML = '';
 
-            // Generate Lists & Legend
             Object.keys(courses).forEach(id => {
                 const c = courses[id];
-                const cardHtml = `
-                    <div class="info-card flex items-start gap-4">
-                        <div class="w-12 h-12 flex-shrink-0 flex items-center justify-center font-black text-sm border-2 border-black rounded-xl shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]" style="background:${c.color}">${id}</div>
-                        <div>
-                            <div class="text-[12px] font-black uppercase leading-tight">${c.name}</div>
-                            <div class="text-[10px] font-bold text-slate-600 mt-1 uppercase leading-none italic">${c.faculty}</div>
-                        </div>
-                    </div>
-                `;
+                const cardHtml = `<div class="info-card flex items-start gap-4">
+                    <div class="w-12 h-12 flex-shrink-0 flex items-center justify-center font-black text-sm border-2 border-black rounded-xl shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]" style="background:${c.color}">${id}</div>
+                    <div><div class="text-[12px] font-black uppercase leading-tight">${c.name}</div><div class="text-[10px] font-bold text-slate-600 mt-1 uppercase leading-none italic">${c.faculty}</div></div>
+                </div>`;
 
-                if (c.type === 'comp') {
-                    compList.innerHTML += cardHtml;
-                } else if (filters.opt === 'ALL' || filters.opt === id) {
-                    optList.innerHTML += cardHtml;
-                }
+                if (c.type === 'comp') compList.innerHTML += cardHtml;
+                else if (filters.opt === 'ALL' || filters.opt === id) optList.innerHTML += cardHtml;
 
                 if (c.type === 'comp' || filters.opt === 'ALL' || filters.opt === id) {
-                    legend.innerHTML += `
-                        <div class="flex items-center gap-2">
-                            <div class="w-3.5 h-3.5 rounded-md border border-black shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]" style="background:${c.color}"></div>
-                            <span class="text-[9px] font-black uppercase text-slate-700">${id}</span>
-                        </div>
-                    `;
+                    legend.innerHTML += `<div class="flex items-center gap-2"><div class="w-3.5 h-3.5 rounded-md border border-black shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]" style="background:${c.color}"></div><span class="text-[9px] font-black uppercase text-slate-700">${id}</span></div>`;
                 }
             });
 
@@ -278,24 +231,18 @@
                     t.className = "flex items-center justify-center text-[9px] font-black opacity-30 bg-slate-50 rounded-lg";
                     t.innerText = slot;
                     container.appendChild(t);
-
-                    days.forEach(day => {
-                        container.appendChild(createCell(day, slot));
-                    });
+                    days.forEach(day => container.appendChild(createCell(day, slot)));
                 });
             } else {
                 days.forEach(day => {
                     const dayClasses = scheduleData.filter(c => c.day === day && isMatch(c));
                     if (dayClasses.length === 0) return;
-
                     const daySec = document.createElement('div');
                     daySec.className = "mobile-day-section";
                     daySec.innerHTML = `<div class="mobile-day-title">${day}</div>`;
-
                     timeSlots.forEach(slot => {
                         const classes = dayClasses.filter(c => c.time === slot);
                         if (classes.length === 0) return;
-
                         const row = document.createElement('div');
                         row.className = "mobile-row";
                         row.innerHTML = `<div class="time-column-mobile">${slot.replace('-', '<br>')}</div><div class="card-column-mobile"></div>`;
@@ -310,9 +257,10 @@
         function createCell(day, slot, isMobile = false) {
             const matched = scheduleData.filter(c => c.day === day && c.time === slot && isMatch(c));
             const cell = document.createElement('div');
-            const h = isMobile ? "min-h-[85px]" : "min-h-[135px]";
-            cell.className = `${h} rounded-2xl cell-border overflow-hidden shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-white transition-all`;
-
+            const h = isMobile ? "min-h-[85px]" : "min-h-[145px]";
+            
+            let cellClasses = `${h} rounded-2xl cell-border overflow-hidden shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-white transition-all`;
+            
             if (matched.length === 0) {
                 cell.className = `${h} bg-slate-50 flex items-center justify-center rounded-2xl opacity-10`;
                 cell.style.border = "none";
@@ -323,38 +271,55 @@
             if (matched.length === 1) {
                 const c = matched[0];
                 const courseInfo = courses[c.id];
+                
+                if (filters.sec === 'COMBINED') {
+                    if (c.sec === 'A') cellClasses += " outline-sec-a";
+                    else if (c.sec === 'B') cellClasses += " outline-sec-b";
+                }
+
+                cell.className = cellClasses;
                 cell.style.backgroundColor = courseInfo.color;
                 cell.innerHTML = `
                     <div class="routine-cell text-center">
                         <div class="text-[12px] font-black leading-none">${c.id}</div>
-                        
                         <div class="flex-grow flex items-center justify-center px-1">
-                            <div class="text-[8.5px] font-black uppercase leading-tight tracking-tight">${courseInfo.name}</div>
+                            <div class="text-[9px] font-black uppercase leading-tight tracking-tight">${courseInfo.name}</div>
                         </div>
-                        
                         <div class="space-y-1.5">
                             <div class="inline-block">
-                                <span class="text-[9.5px] font-black bg-white/60 px-2 py-0.5 rounded-md border border-black/10">ROOM ${c.room}</span>
+                                <span class="text-[10px] font-black bg-white/60 px-2 py-0.5 rounded-md border border-black/10">ROOM: ${c.room}</span>
                             </div>
                             <div class="flex flex-col items-center gap-1">
-                                <div class="text-[7px] font-bold opacity-60 uppercase">${courseInfo.shortFaculty}</div>
-                                ${filters.sec === 'COMBINED' && c.sec !== 'ALL' ? `<div class="text-[7px] font-black bg-black/10 px-2 rounded-full">SEC ${c.sec}</div>` : ''}
+                                <div class="text-[7.5px] font-bold opacity-60 uppercase">${courseInfo.shortFaculty}</div>
+                                ${filters.sec === 'COMBINED' && c.sec !== 'ALL' ? `<div class="text-[7.5px] font-black ${c.sec === 'A' ? 'bg-rose-400 text-white' : 'bg-purple-400 text-white'} px-2 rounded-full">SEC ${c.sec}</div>` : ''}
                             </div>
                         </div>
                     </div>
                 `;
             } else {
+                cell.className = cellClasses;
                 const wrap = document.createElement('div');
                 wrap.className = "split-container";
                 matched.forEach((c, idx) => {
                     const courseInfo = courses[c.id];
                     const half = document.createElement('div');
                     half.className = "split-half";
+                    
+                    let borderClass = "";
+                    if (filters.sec === 'COMBINED') {
+                        if (c.sec === 'A') borderClass = "border-l-4 border-rose-300";
+                        else if (c.sec === 'B') borderClass = "border-l-4 border-purple-300";
+                    }
+
+                    half.className += ` ${borderClass}`;
                     half.style.backgroundColor = courseInfo.color;
                     half.innerHTML = `
                         <div class="text-[10px] font-black leading-none">${c.id}</div>
                         <div class="text-[7px] font-black uppercase text-center leading-none">${courseInfo.name.split(' ').slice(0,2).join(' ')}</div>
-                        <div class="text-[8.5px] font-black mt-1 px-2 bg-white/30 rounded border border-black/5">${c.room}</div>
+                        <div class="flex items-center gap-2">
+                             <div class="text-[8.5px] font-black px-1.5 bg-white/30 rounded border border-black/5">${c.room}</div>
+                             ${filters.sec === 'COMBINED' ? `<div class="text-[7px] font-black ${c.sec === 'A' ? 'text-rose-500' : 'text-purple-500'}">${c.sec}</div>` : ''}
+                        </div>
                     `;
                     wrap.appendChild(half);
                     if (idx < matched.length - 1) {
@@ -372,7 +337,7 @@
             const area = document.getElementById('capture-area');
             const canvas = await html2canvas(area, { scale: 3, useCORS: true });
             const link = document.createElement('a');
-            link.download = `Econ_Routine_Tidy_View.png`;
+            link.download = `Econ_Routine_Lavender_View.png`;
             link.href = canvas.toDataURL();
             link.click();
         }
@@ -382,4 +347,3 @@
     </script>
 </body>
 </html>
-
