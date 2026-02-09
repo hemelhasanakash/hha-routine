@@ -38,10 +38,13 @@
         }
 
         .split-container { display: flex; flex-direction: column; height: 100%; width: 100%; overflow: hidden; }
-        .split-half { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2px; }
+        .split-half { flex: 1; display: flex; flex-direction: column; justify-content: space-around; align-items: center; padding: 4px 2px; }
         .split-divider { height: 1px; background-color: #000; width: 100%; }
         
         .info-card { border: 2px solid #000; background: #fff; padding: 1rem; border-radius: 1rem; box-shadow: 4px 4px 0px 0px rgba(0,0,0,1); }
+        
+        /* Cell content structure */
+        .routine-cell { display: flex; flex-direction: column; justify-content: space-between; height: 100%; padding: 8px 4px; }
     </style>
 </head>
 <body class="p-2 md:p-10">
@@ -307,8 +310,8 @@
         function createCell(day, slot, isMobile = false) {
             const matched = scheduleData.filter(c => c.day === day && c.time === slot && isMatch(c));
             const cell = document.createElement('div');
-            const h = isMobile ? "min-h-[75px]" : "min-h-[110px]";
-            cell.className = `${h} rounded-2xl cell-border overflow-hidden shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-white flex flex-col items-center justify-center transition-all`;
+            const h = isMobile ? "min-h-[85px]" : "min-h-[135px]";
+            cell.className = `${h} rounded-2xl cell-border overflow-hidden shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-white transition-all`;
 
             if (matched.length === 0) {
                 cell.className = `${h} bg-slate-50 flex items-center justify-center rounded-2xl opacity-10`;
@@ -322,23 +325,36 @@
                 const courseInfo = courses[c.id];
                 cell.style.backgroundColor = courseInfo.color;
                 cell.innerHTML = `
-                    <div class="text-center p-2">
+                    <div class="routine-cell text-center">
                         <div class="text-[12px] font-black leading-none">${c.id}</div>
-                        <div class="text-[8px] font-black uppercase mt-1.5 leading-tight">${courseInfo.name}</div>
-                        <div class="text-[7px] font-bold opacity-60 mt-2 uppercase">R-${c.room} • ${courseInfo.shortFaculty}</div>
-                        ${filters.sec === 'COMBINED' && c.sec !== 'ALL' ? `<div class="text-[7px] font-black bg-black/10 px-1.5 rounded-full mt-1.5 inline-block">SEC ${c.sec}</div>` : ''}
+                        
+                        <div class="flex-grow flex items-center justify-center px-1">
+                            <div class="text-[8.5px] font-black uppercase leading-tight tracking-tight">${courseInfo.name}</div>
+                        </div>
+                        
+                        <div class="space-y-1.5">
+                            <div class="inline-block">
+                                <span class="text-[9.5px] font-black bg-white/60 px-2 py-0.5 rounded-md border border-black/10">ROOM ${c.room}</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-1">
+                                <div class="text-[7px] font-bold opacity-60 uppercase">${courseInfo.shortFaculty}</div>
+                                ${filters.sec === 'COMBINED' && c.sec !== 'ALL' ? `<div class="text-[7px] font-black bg-black/10 px-2 rounded-full">SEC ${c.sec}</div>` : ''}
+                            </div>
+                        </div>
                     </div>
                 `;
             } else {
                 const wrap = document.createElement('div');
                 wrap.className = "split-container";
                 matched.forEach((c, idx) => {
+                    const courseInfo = courses[c.id];
                     const half = document.createElement('div');
                     half.className = "split-half";
-                    half.style.backgroundColor = courses[c.id].color;
+                    half.style.backgroundColor = courseInfo.color;
                     half.innerHTML = `
                         <div class="text-[10px] font-black leading-none">${c.id}</div>
-                        <div class="text-[6px] font-bold mt-1">R-${c.room}</div>
+                        <div class="text-[7px] font-black uppercase text-center leading-none">${courseInfo.name.split(' ').slice(0,2).join(' ')}</div>
+                        <div class="text-[8.5px] font-black mt-1 px-2 bg-white/30 rounded border border-black/5">${c.room}</div>
                     `;
                     wrap.appendChild(half);
                     if (idx < matched.length - 1) {
@@ -356,7 +372,7 @@
             const area = document.getElementById('capture-area');
             const canvas = await html2canvas(area, { scale: 3, useCORS: true });
             const link = document.createElement('a');
-            link.download = `Econ_Routine_17th_Batch.png`;
+            link.download = `Econ_Routine_Tidy_View.png`;
             link.href = canvas.toDataURL();
             link.click();
         }
@@ -366,3 +382,4 @@
     </script>
 </body>
 </html>
+
